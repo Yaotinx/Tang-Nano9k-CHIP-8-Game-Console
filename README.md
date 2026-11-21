@@ -9,7 +9,7 @@ A CHIP-8 game console written in Verilog on a Sipeed Tang Nano 9K FPGA (Gowin GW
 - Clock-enable speed limiter: CPU runs at 4 kHz in the 29.7 MHz clock domain
 - 4x4 membrane keypad scanner (row/column scan at 1 kHz) mapped to the CHIP-8 hex keypad
 - Boots from the FPGA's on-chip flash, no PC needed
-- Instruction groups verified with Icarus Verilog testbenches [add: keypad scanner testbench, Timendus test results once done]
+- Instruction groups verified with Icarus Verilog testbenches
 
 ## Hardware
 
@@ -20,19 +20,19 @@ A CHIP-8 game console written in Verilog on a Sipeed Tang Nano 9K FPGA (Gowin GW
 ## Architecture
 
 ~~~
-keypad -> keypad_scan -> buttons[15:0]
-                              |
-                              v
-                      chip8_core (CPU + RAM + timers)
-                              |
-                              v
-                       framebuffer (64x32)
-                              |
-                              v
-                chip8_vout -> HDMI/TMDS encoder -> TV
+keypad -> keyboardScan.v -> buttons[15:0]
+                                 |
+                                 v
+                 Main.v (chip8_core: CPU + RAM + timers)
+                                 |
+                                 v
+                          framebuffer (64x32)
+                                 |
+                                 v
+                   chip8_vout -> HDMI/TMDS encoder -> TV
 ~~~
 
-[Replace with a real block diagram when you have one]
+Source files: `Main.v` (module `chip8_core`), `CPU.v`, `RAM.v`, `Graphics.v` (framebuffer), `Key.v`, `Timers.v`, `keyboardScan.v`, `chip8_vout.v`, `top.v`, and the HDMI files in `src/hdmi`. A proper block diagram is coming.
 
 ## Controls
 
@@ -51,7 +51,7 @@ A 0 B F
 
 ## Building
 
-1. Open the project in Gowin EDA [version V1.9.11.03]
+1. Open the project in Gowin EDA V1.9.11.03
 2. Set the language to SystemVerilog 2017 (Project > Configuration > Synthesize)
 3. Put the ROM you want in `rom.hex` (one byte per line, loaded at 0x200)
 4. Synthesize, Place & Route, then program with Gowin Programmer (SRAM mode to test, embedded flash to keep)
@@ -59,11 +59,11 @@ A 0 B F
 ## What I wrote and what I used
 
 - Written by me: the CHIP-8 CPU, RAM, framebuffer, timers, clock-enable logic, keypad scanner, and the CHIP-8 video module
-- Adapted from open source: the HDMI/TMDS video pipeline (the SVO library, as used in the Tang Nano 9K HDMI example). I integrated it and retuned the PLL and video mode to 800x480. [Add the exact repo link and keep its ISC license headers]
+- Adapted from open source: the HDMI/TMDS video pipeline, which is the SVO library (originally by Clifford Wolf, ISC license) as used in Sipeed's Tang Nano 9K HDMI example: https://github.com/sipeed/TangNano-9K-example. I integrated it and retuned the PLL and video mode to 800x480. The license headers are kept in those files.
 
 ## ROMs
 
-ROMs are not included. They come from public CHIP-8 collections:
+`rom.hex` holds whichever game I last loaded, and `rom_box.hex` is a small test sprite program I wrote. The games come from public CHIP-8 collections, and I have not verified every license:
 
 - Pong: classic CHIP-8 game collection
 - Mato8 (Snake): nortti, via the chip8Archive
