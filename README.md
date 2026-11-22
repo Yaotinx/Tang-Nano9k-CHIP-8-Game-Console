@@ -2,6 +2,11 @@
 
 A CHIP-8 game console written in Verilog on a Sipeed Tang Nano 9K FPGA (Gowin GW1NR-9). It has its own CPU core, a 4x4 keypad scanner, and HDMI output, and it runs Pong, Snake and Tetris on a TV.
 
+## Demo
+
+- [Pong with the keypad](demo_2366.mp4)
+- [Tetris](demo_2368.mp4)
+
 ## Features
 
 - CHIP-8 CPU in Verilog: 4 KB RAM, multi-state fetch/decode/execute FSM, delay and sound timers
